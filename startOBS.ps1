@@ -59,7 +59,14 @@ function RunOrCheckOBS {
     
     if (-not $obsRunning) {
         if ($d) { Write-Output "[DEBUG] [PROCESS] Starting OBS" }
-        Start-Process -FilePath $obsExePath -ArgumentList "--minimize-to-tray --disable-safe-mode" -WindowStyle Minimized
+		
+		# Remove the safe_mode file if it exists
+		if (Test-Path "$env:APPDATA\obs-studio\safe_mode") {
+			Remove-Item "$env:APPDATA\obs-studio\safe_mode" -Force
+			if ($d) { Write-Output "[DEBUG] [SAFE MODE] Removed safe_mode file." }
+		}
+		
+        Start-Process -FilePath $obsExePath -ArgumentList "--minimize-to-tray --disable-safe-mode --always-ignore-safe-mode" -WindowStyle Minimized
         WaitForWebSocket  # Ensure WebSocket is active before continuing
     } else {
         if ($d) { Write-Output "[DEBUG] [PROCESS] OBS Running" }
