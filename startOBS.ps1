@@ -59,7 +59,7 @@ function RunOrCheckOBS {
     
     if (-not $obsRunning) {
         if ($d) { Write-Output "[DEBUG] [PROCESS] Starting OBS" }
-        Start-Process -FilePath $obsExePath -ArgumentList "--minimize-to-tray" -WindowStyle Minimized
+        Start-Process -FilePath $obsExePath -ArgumentList "--minimize-to-tray --disable-safe-mode" -WindowStyle Minimized
         WaitForWebSocket  # Ensure WebSocket is active before continuing
     } else {
         if ($d) { Write-Output "[DEBUG] [PROCESS] OBS Running" }
